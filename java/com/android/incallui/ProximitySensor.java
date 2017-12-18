@@ -55,12 +55,15 @@ public class ProximitySensor
   private boolean mIsAttemptingVideoCall;
   private boolean mIsVideoCall;
 
+    // Disables use of proximity sensor to trigger screen lock if False
+    private boolean mUseProximitySensor = false;
   public ProximitySensor(
       @NonNull Context context,
       @NonNull AudioModeProvider audioModeProvider,
       @NonNull AccelerometerListener accelerometerListener) {
     mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-    if (mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
+      if (mUseProximitySensor &&
+	    mPowerManager.isWakeLockLevelSupported(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK)) {
       mProximityWakeLock =
           mPowerManager.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, TAG);
     } else {
